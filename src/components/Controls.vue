@@ -7,7 +7,7 @@
     <TimeControl
       @start="listeners.start"
       @rap="listeners.rap"
-      :index="modelValue.index + modelValue.step"
+      :index="modelValue.index"
     />
   </div>
 </template>
@@ -29,4 +29,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>

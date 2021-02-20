@@ -36,7 +36,7 @@ class recordlist extends Array {
             return acc + record.diff ** 2
         }, 0) / this.length - mean ** 2
 
-        const std = Math.sqrt(variance)
+        const std = Math.sqrt(variance * this.length / (this.length - 1))
 
         return [mean, std]
     }
@@ -55,10 +55,10 @@ class recordlist extends Array {
 class bookinfo {
     constructor() {
         this.title = ""
-        this.start = 0
-        this.end = 0
+        this.start = 1
+        this.end = 1
         this.step = 1
-        this.index = 0
+        this.index = 1
     }
 
     setStart(index) {
@@ -74,7 +74,7 @@ class bookinfo {
     step
     getNextName() {
         this.index += this.step
-        return this.index
+        return this.index - this.step
     }
 
     getLeft() {
@@ -97,7 +97,7 @@ export class RecordStats {
         const now = new Date();
         now.setMilliseconds(now.getMilliseconds() + this.mean * left)
         this.expectedEnd = now
-
+        this.expectedRange = std * left
     }
     mean
     std

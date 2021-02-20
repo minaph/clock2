@@ -36,8 +36,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .bookinfo {
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 </style>
