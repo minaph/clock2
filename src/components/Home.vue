@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Controls :listeners="listeners" v-model="bookrecord.bookinfo" />
+    <Controls
+      :listeners="listeners"
+      v-model="bookrecord.bookinfo"
+      :prevStartTime="prevStartTime"
+      :lastPrevious="lastPrevious"
+    />
     <Stats :stats="stats" />
     <RecordList :list="bookrecord.recordlist" />
   </div>
@@ -23,6 +28,8 @@ export default {
     return {
       bookrecord: new BookRecord(),
       stats: new RecordStats(),
+
+      // prevStartTime: null,
     };
   },
   computed: {
@@ -30,8 +37,21 @@ export default {
       return {
         start: () => this.bookrecord.start(),
         rap: () => this.bookrecord.rap(),
+        remove: () => {
+          console.log("remove");
+          this.bookrecord.remove();
+          this.bookrecord = new BookRecord();
+          
+          location.reload()
+        },
       };
     },
+    prevStartTime(){
+      return this.bookrecord.recordlist?.startTime
+    },
+    lastPrevious(){
+      return this.bookrecord.recordlist?.[0]
+    }
   },
   watch: {
     bookrecord: {
@@ -43,6 +63,15 @@ export default {
       },
       deep: true,
     },
+  },
+  created() {
+    this.bookrecord.load();
+    window.addEventListener("beforeunload", () => {
+      this.bookrecord.save();
+    });
+  },
+  beforeUnmount() {
+    this.bookrecord.save();
   },
   methods: {
     // stats() {

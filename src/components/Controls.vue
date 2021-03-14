@@ -7,7 +7,10 @@
     <TimeControl
       @start="listeners.start"
       @rap="listeners.rap"
+      @remove="listeners.remove"
       :index="modelValue.index"
+      :prevStartTime="prevStartTime"
+      :lastPrevious="lastPrevious"
     />
   </div>
 </template>
@@ -25,6 +28,8 @@ export default {
   props: {
     listeners: Object,
     modelValue: Object,
+    prevStartTime: Date,
+    lastPrevious: Date
   },
 };
 </script>

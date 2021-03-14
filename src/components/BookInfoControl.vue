@@ -2,7 +2,7 @@
   <details class="bookinfo">
     <summary>Book info details</summary>
     <div class="infolist">
-      <div v-for="k in Object.keys(bookinfo)" :key="k">
+      <div v-for="k in keys" :key="k">
         {{ k }}: <input type="text" v-model="info[k]" />
       </div>
 
@@ -31,6 +31,11 @@ export default {
       });
       obj.setStart(obj.start);
       return obj;
+    },
+    keys() {
+      return [...Object.keys(this.bookinfo)].filter((x) =>
+        "save load remove".split(" ").every((y) => x !== y)
+      );
     },
   },
 };

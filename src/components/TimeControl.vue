@@ -7,7 +7,7 @@
       <button @click="start">Start</button>
       <!-- <button>Stop</button> -->
       <button @click="rap" class="rap">Rap</button>
-      <!-- <button>Reset</button> -->
+      <button @click="reset" class="reset">Reset</button>
     </div>
     <p class="clock">
       {{
@@ -30,7 +30,7 @@ export default {
       previous: new Date(),
     };
   },
-  props: ["index"],
+  props: ["index", "prevStartTime", "lastPrevious"],
   computed: {
     time() {
       if (this.startTime) {
@@ -44,6 +44,19 @@ export default {
       }
       return 0;
     },
+  },
+  created() {
+    this.startTime = this.prevStartTime;
+    if (this.startTime) {
+      if(this.lastPrevious){
+        this.previous = this.lastPrevious
+      }else{
+        this.previous = this.startTime
+      }
+      setInterval(() => {
+        this.now = new Date();
+      }, 50);
+    }
   },
   methods: {
     start() {
@@ -63,6 +76,9 @@ export default {
       const n = (Math.round(time / 10) / 100 + "").split(".");
 
       return n[0] + "." + (n[1] || "") + "0".repeat(2 - (n[1] || "").length);
+    },
+    reset() {
+      this.$emit("remove");
     },
   },
 };
