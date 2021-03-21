@@ -35,23 +35,29 @@ export default {
   computed: {
     listeners() {
       return {
-        start: () => this.bookrecord.start(),
-        rap: () => this.bookrecord.rap(),
+        start: () => {
+          this.bookrecord.start();
+          this.bookrecord.save();
+        },
+        rap: () => {
+          this.bookrecord.rap();
+          this.bookrecord.save();
+        },
         remove: () => {
           console.log("remove");
           this.bookrecord.remove();
           this.bookrecord = new BookRecord();
-          
-          location.reload()
+
+          location.reload();
         },
       };
     },
-    prevStartTime(){
-      return this.bookrecord.recordlist?.startTime
+    prevStartTime() {
+      return this.bookrecord.recordlist?.startTime;
     },
-    lastPrevious(){
-      return this.bookrecord.recordlist?.[0]
-    }
+    lastPrevious() {
+      return this.bookrecord.recordlist?.[0];
+    },
   },
   watch: {
     bookrecord: {
@@ -66,12 +72,12 @@ export default {
   },
   created() {
     this.bookrecord.load();
-    window.addEventListener("beforeunload", () => {
-      this.bookrecord.save();
-    });
+    // window.addEventListener("beforeunload", () => {
+    //   this.bookrecord.save();
+    // });
   },
   beforeUnmount() {
-    this.bookrecord.save();
+    // this.bookrecord.save();
   },
   methods: {
     // stats() {
