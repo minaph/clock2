@@ -1,22 +1,20 @@
 <template>
   <div class="control time">
-    <small>{{ index }}</small>
-    <p class="now">{{ filter(time) }}</p>
-    <p class="this">{{ filter(recording) }}</p>
-    <div class="buttons">
-      <button @click="start">Start</button>
-      <!-- <button>Stop</button> -->
-      <button @click="rap" class="rap">Rap</button>
-      <button @click="reset" class="reset">Reset</button>
+    <div class="box">
+      <div class="upper">
+        <small>{{ index }}</small>
+        <span class="sum">{{ filter(time) }}</span>
+        <span class="now">{{ filter(recording) }}</span>
+      </div>
+
+      <div class="input-box"><slot /></div>
     </div>
-    <p class="clock">
-      {{
-        new Date().toLocaleString("en-JP", {
-          hour: "numeric",
-          minute: "numeric",
-        })
-      }}
-    </p>
+    <div class="buttons">
+      <BaseButton @click="start">Start</BaseButton>
+      <!-- <button>Stop</button> -->
+      <BaseButton @click="rap" class="rap">Rap</BaseButton>
+      <BaseButton @click="reset" class="reset">Reset</BaseButton>
+    </div>
   </div>
 </template>
 
@@ -48,10 +46,10 @@ export default {
   created() {
     this.startTime = this.prevStartTime;
     if (this.startTime) {
-      if(this.lastPrevious){
-        this.previous = this.lastPrevious
-      }else{
-        this.previous = this.startTime
+      if (this.lastPrevious) {
+        this.previous = this.lastPrevious;
+      } else {
+        this.previous = this.startTime;
       }
       setInterval(() => {
         this.now = new Date();
@@ -86,33 +84,42 @@ export default {
 
 <style scoped>
 .buttons {
-  display: inline;
-}
-.this {
   display: inline-block;
-  padding: 0rem 0.5rem 1rem 0.5rem;
-  font-size: 1.5rem;
-  width: 7rem;
-  margin-bottom: 0;
+  margin-top: 0.5rem;
+  padding-left: 2rem;
 }
+
 .now {
   display: inline-block;
-  padding: 0rem 0 1rem 2rem;
+  padding: 0rem 0.5rem 0rem 0.5rem;
+  font-size: 1.5rem;
+  width: 7rem;
+  margin: 0 0 0 0;
+}
+.sum {
+  display: inline-block;
+  padding: 0rem 0 0 2rem;
   font-size: 1.1rem;
   width: 5rem;
   text-align: right;
   margin-bottom: 0;
 }
-.control {
+/* .control {
   margin-bottom: 1rem;
   margin-top: 1rem;
-}
+} */
 
 .rap {
   width: 5rem;
 }
-.clock {
-  font-size: 1.2rem;
-  margin: 0 0 0 1rem;
+
+.input-box {
+  /* display: inline-block; */
+  margin: 0.3rem 0 0rem 0;
+  text-align: center;
+}
+
+.box {
+  display: inline-block;
 }
 </style>

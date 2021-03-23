@@ -1,19 +1,25 @@
 <template>
-  <div class="stats">
-    <StatsElement
-      name="Mean"
-      :value="filter(stats.mean) + ' ± ' + filter(stats.std) + ' Sec'"
-    />
-    <StatsElement name="Expected End" :value="expect()" />
+  <div>
+    <div class="inner-stats">
+      <Clock class="clock" />
+
+      <StatsElement
+        name="Mean"
+        :value="filter(stats.mean) + ' ± ' + filter(stats.std) + ' Sec'"
+      />
+      <StatsElement name="Expected End" :value="expect()" />
+    </div>
   </div>
 </template>
 
 <script>
 import StatsElement from "@/atoms/StatsElement";
+import Clock from "@/atoms/Clock";
 export default {
   name: "Stats",
   components: {
     StatsElement,
+    Clock,
   },
   props: ["stats"],
   methods: {
@@ -40,7 +46,12 @@ export default {
 </script>
 
 <style scoped>
-.stats {
-  margin: 0.5rem;
+.inner-stats {
+  padding: 0.5rem;
+  border: solid 1px grey;
+  display: inline-block;
+}
+.clock {
+  margin: 0 0 0.5rem 0;
 }
 </style>

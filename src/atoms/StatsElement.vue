@@ -1,6 +1,7 @@
 <template>
   <div>
-    {{ name }}: <b>{{ value }}</b>
+    <span class="label">{{ name }}: </span
+    ><span class="value">{{ value }}</span>
   </div>
 </template>
 
@@ -11,4 +12,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.label {
+  display: inline-block;
+  width: 8rem;
+}
+.value {
+  display: inline-block;
+  font-weight: bold;
+}
+</style>

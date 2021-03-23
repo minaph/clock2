@@ -13,8 +13,8 @@ export class BookRecord {
     // this.recordlist =
     this.recordlist.start();
   }
-  rap() {
-    this.recordlist.rap(this.bookinfo.getNextName());
+  rap(label = "") {
+    this.recordlist.rap(this.bookinfo.getNextName(), label);
   }
   // reset() {
   //     this.recordlist = []
@@ -46,12 +46,8 @@ export class BookRecord {
       this.recordlist.startTime = new Date(gotTime);
     }
 
-    this.recordlist.reduceRight((prev, v, i, arr) => {
-      const newRecord = new record(v)
-        .setName(
-          this.bookinfo.start + (arr.length - i - 1) * this.bookinfo.step
-        )
-        .setDiff(prev);
+    this.recordlist.reduceRight((prev, v, i) => {
+      const newRecord = new record(v).setDiff(prev);
       this.recordlist.splice(i, 1, newRecord);
       return newRecord;
     }, this.recordlist.startTime);
@@ -85,10 +81,17 @@ class recordlist extends Array {
 
     return [mean, std];
   }
-  rap(name) {
+  rap(name, label) {
     const previous = this[0] || this.startTime;
 
-    this.splice(0, 0, new record().setName(name).setDiff(previous));
+    this.splice(
+      0,
+      0,
+      new record()
+        .setName(name)
+        .setDiff(previous)
+        .setLabel(label)
+    );
   }
   start() {
     this.startTime = new Date();
@@ -127,15 +130,30 @@ class bookinfo {
 
 class record extends Date {
   constructor(...args) {
-    super(...args);
-    // this.name = name;
-    // this.previous = previous;
-    // this.diff = this.getTime() - previous.getTime();
+    if (args.length > 0 && args[0].includes(" ")) {
+      let label, name;
+      [args[0], name, label] = args[0].split(" ");
+      super(...args);
+      this.name = "";
+      this.label = "";
+      this.setLabel(label);
+      this.setName(name);
+    } else {
+      super(...args);
+      this.name = "";
+      this.label = "";
+    }
   }
   setName(name) {
     this.name = name;
     return this;
   }
+
+  setLabel(label) {
+    this.label = label.replaceAll("[space]", " ");
+    return this;
+  }
+
   setDiff(previous) {
     try {
       this.diff = this.getTime() - previous.getTime();
@@ -144,9 +162,13 @@ class record extends Date {
     }
     return this;
   }
-  // toJSON() {
-  //   return JSON.stringify({ name: this.name, diff: this.diff });
-  // }
+  toJSON() {
+    return [
+      this.toISOString(),
+      this.name,
+      this.label.replaceAll(" ", "[space]"),
+    ].join(" ");
+  }
 }
 
 export class RecordStats {

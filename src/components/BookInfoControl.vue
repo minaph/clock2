@@ -3,18 +3,23 @@
     <summary>Book info details</summary>
     <div class="infolist">
       <div v-for="k in keys" :key="k">
-        {{ k }}: <input type="text" v-model="info[k]" />
+        <!-- {{ k }}: <input type="text" v-model="info[k]" /> -->
+        <BookInfoInput :label="k" v-model="info[k]" />
       </div>
 
       <!-- Title: <input type="text" v-model="info.title" /> -->
     </div>
-    <button @click="$emit('update', cinfo)">register</button>
+    <BaseButton @click="$emit('update:bookinfo', cinfo)">register</BaseButton>
   </details>
 </template>
 
 <script>
+import BookInfoInput from "@/atoms/BookInfoInput";
 export default {
   name: "BookInfoControl",
+  components: {
+    BookInfoInput,
+  },
   props: {
     bookinfo: Object,
   },
@@ -43,6 +48,11 @@ export default {
 
 <style scoped>
 .bookinfo {
+  margin-bottom: 0.5rem;
+}
+
+.bookinfo summary {
+  outline: none;
   margin-bottom: 0.5rem;
 }
 </style>

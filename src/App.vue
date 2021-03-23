@@ -1,5 +1,5 @@
 <template>
-  <Home id="app" msg="Welcome to Your Vue.js App" />
+  <Home msg="Welcome to Your Vue.js App" />
 </template>
 
 <script>
@@ -20,6 +20,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 
   color: #2c3e50;
-  margin: 4rem;
+  margin: 4rem 0 0 7%;
 }
 </style>
