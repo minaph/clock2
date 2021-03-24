@@ -31,7 +31,7 @@ export default {
   props: ["bookrecord"],
   data() {
     return {
-      label: localStorage.getItem("goingTaskName"),
+      label: localStorage.getItem("goingTaskName") || "",
     };
   },
   computed: {
