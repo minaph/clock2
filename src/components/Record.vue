@@ -3,7 +3,7 @@
     <small class="page">{{ record.name }}</small>
     <!-- <div class="time">8:25:30</div> -->
     <div class="diff">{{ filter(record.diff) }}</div>
-    <input class="input" type="text" v-model="value" />
+    <input class="input" type="text" v-model="value" @blur="$emit('blur')" />
   </li>
 </template>
 

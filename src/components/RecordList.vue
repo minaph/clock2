@@ -1,15 +1,20 @@
 <template>
   <TimeControl
-    @start="listeners.start"
-    @rap="listeners.rap"
-    @remove="listeners.remove"
+    @start="start"
+    @rap="rap"
+    @remove="remove"
     v-bind="controlValue"
     class="controller"
   >
-    <input type="text" v-model="label" class="input" />
+    <input type="text" v-model="label" class="input" @blur="save" />
   </TimeControl>
   <ul>
-    <Record v-for="li in bookrecord.recordlist" :key="li.name" :record="li" />
+    <Record
+      v-for="li in bookrecord.recordlist"
+      :key="li.name"
+      :record="li"
+      @blur="save"
+    />
   </ul>
 </template>
 
@@ -26,33 +31,10 @@ export default {
   props: ["bookrecord"],
   data() {
     return {
-      label: "",
+      label: localStorage.getItem("goingTaskName"),
     };
   },
   computed: {
-    listeners() {
-      return {
-        start: () => {
-          this.bookrecord.start();
-          this.bookrecord.save();
-        },
-        rap: () => {
-          this.bookrecord.rap(this.label);
-          this.label = "";
-          // this.bookrecord.recordlist[0].setLabel(label);
-          this.bookrecord.save();
-        },
-        remove: () => {
-          if (!confirm("Are you sure?")) {
-            return;
-          }
-          this.bookrecord.remove();
-          this.$emit("update:bookrecord", new BookRecord());
-
-          location.reload();
-        },
-      };
-    },
     prevStartTime() {
       return this.bookrecord.recordlist?.startTime;
     },
@@ -68,6 +50,33 @@ export default {
         prevStartTime: this.prevStartTime,
         lastPrevious: this.lastPrevious,
       };
+    },
+  },
+  methods: {
+    start() {
+      this.bookrecord.start();
+      this.save();
+    },
+    rap() {
+      this.bookrecord.rap(this.label);
+      this.label = "";
+      // this.bookrecord.recordlist[0].setLabel(label);
+      this.save();
+    },
+    remove() {
+      if (!confirm("Are you sure?")) {
+        return;
+      }
+      this.bookrecord.remove();
+      this.$emit("update:bookrecord", new BookRecord());
+
+      localStorage.removeItem("goingTaskName");
+
+      location.reload();
+    },
+    save() {
+      localStorage.setItem("goingTaskName", this.label);
+      this.bookrecord.save();
     },
   },
 };
