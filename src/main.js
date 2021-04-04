@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import { diagram } from "vue-diagram";
 
 const app = createApp(App);
 
@@ -14,3 +15,5 @@ requireComponent.keys().forEach(function(fileName) {
 });
 
 app.mount("#app");
+
+diagram(app);
